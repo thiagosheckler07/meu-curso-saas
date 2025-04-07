@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Seus Cursos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <span class="logo">🎓 Meu Curso</span>
+    <a href="/logout" class="logout">Sair</a>
+  </nav>
+
+  <div class="container">
+    <h1>Bem-vindo(a), aluno!</h1>
+    <p>Aqui estão seus cursos disponíveis:</p>
+    <div id="cursos"></div>
+  </div>
+
+  <script>
+    fetch('/api/cursos')
+      .then(res => res.json())
+      .then(cursos => {
+        const div = document.getElementById('cursos');
+        cursos.forEach(curso => {
+          div.innerHTML += `
+            <div class="curso">
+              <h2>${curso.titulo}</h2>
+              <video controls width="100%" src="${curso.video}"></video>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>
