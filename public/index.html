@@ -3,12 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Meus Cursos</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    .curso {
+      margin: 20px 0;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    video {
+      width: 100%;
+      max-width: 640px;
+      display: block;
+      margin: 1rem auto;
+    }
+  </style>
 </head>
 <body>
   <h1>Bem-vindo aos meus cursos!</h1>
   <div id="cursos"></div>
 
-  <script src="script.js"></script>
+  <script>
+    fetch('/api/cursos')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('cursos');
+        data.forEach(curso => {
+          const div = document.createElement('div');
+          div.className = 'curso';
+          div.innerHTML = `
+            <h2>${curso.titulo}</h2>
+            <video controls>
+              <source src="${curso.video}" type="video/mp4">
+              Seu navegador não suporta vídeos.
+            </video>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('cursos').innerHTML = 'Erro ao carregar os cursos.';
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
